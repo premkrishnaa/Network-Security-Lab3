@@ -1,0 +1,65 @@
+Script started on Sunday 08 October 2017 01:21:05 AM IST
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ ls
+[0m[01;34mAS[0m                  comments.txt       [01;34mFS2[0m  [01;34mFS5[0m  [01;34mFS8[0m    ker5.py   README.md   tgs.py    [01;34muser10[0m  [01;34muser4[0m  [01;34muser7[0m  userkeys.py
+as.py               fileserverkeys.py  [01;34mFS3[0m  [01;34mFS6[0m  [01;34mFS9[0m    ker5.pyc  script.log  time.txt  [01;34muser2[0m   [01;34muser5[0m  [01;34muser8[0m
+as_tgs_enc_keys.py  [01;34mFS1[0m                [01;34mFS4[0m  [01;34mFS7[0m  fs.py  Lab3.pdf  [01;34mTGS[0m         [01;34muser1[0m     [01;34muser3[0m   [01;34muser6[0m  [01;34muser9[0m
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ cat TGS[K[K[K[K[K[K[Kls TGS/
+key_fs_1.txt  key_fs_3.txt  key_fs_5.txt  key_fs_7.txt  key_fs_9.txt  key_user_10_tgs.txt  key_user_4_tgs.txt
+key_fs_2.txt  key_fs_4.txt  key_fs_6.txt  key_fs_8.txt  key_tgs.txt   key_user_3_tgs.txt
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ ls AS/key_[K[K[K[K
+key_tgs.txt      key_user_1.txt  key_user_3.txt  key_user_5.txt  key_user_7.txt  key_user_9.txt
+key_user_10.txt  key_user_2.txt  key_user_4.txt  key_user_6.txt  key_user_8.txt
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ ls user6/
+key.txt
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ ls user3/
+abc.txt  abc.txt.enc  key.txt  key_user_3_fs_3.txt  key_user_3_tgs.txt  lmn.txt  lmn.txt.enc
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ ls user10/
+abc.txt  abc.txt.enc  key.txt  key_user_10_fs_3.txt  key_user_10_tgs.txt  test1.txt
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ ls FS3/user3/
+abc.txt  abc.txt.enc  lmn.txt  lmn.txt.enc
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ ls FS4/user3/
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ ls FS3/user10/
+abc.txt  lmn.txt  test1.txt  test1.txt.enc
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ python ker5.py -N 3 FS1 FS3 FS7
+ker5>get user10 FS3 test1	.txt           lmn.txt
+Success!!
+ker5>put user10 FS6 k.txt
+File server not specified in command line! Try again..
+ker5>put user3 FS7 abc.	txt
+Success!!
+ker5>p exit
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ ls FS7/
+key.txt  key_user_3_fs_7.txt  [0m[01;34muser1[0m  [01;34muser10[0m  [01;34muser2[0m  [01;34muser3[0m  [01;34muser4[0m  [01;34muser5[0m  [01;34muser6[0m  [01;34muser7[0m  [01;34muser8[0m  [01;34muser9[0m
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ ls FS7/user3/
+abc.txt  abc.txt.enc
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ catls FS7/user3/[1P FS7/user3/[1P FS7/user3/c FS7/user3/a FS7/user3/t FS7/user3/[C[C[C[C[C[C[C[C[C[C[Cabc.txt
+hello world!
+hi there@ owl apple and so on
+once upon a time]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ cat FS7/user3/abc.txt.enc 
+RXtjxQuFy727WDEIBeYYSKq0qsTGwWypqOJfD1rjhMf5SjQQ5pI48oMl++KC9lO2FUgwrJMULNk6j+BGiQ9DgA==]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ [H[2J]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ cat FS7/user3/abc.txt.enc [K[8Pls FS7/user3/[C[C[C[C[C[C[C[C[K[K[K[K[K[K[K[K[K[Kuser10/
+abc.txt  abc.txt.enc  key.txt  key_user_10_fs_3.txt  key_user_10_tgs.txt  lmn.txt  lmn.txt.enc  test1.txt
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ cat lmn.[K[K[K[K[K[K[K[Kcat user10/lmn.txt
+hello world!
+hi there@ owl apple and so on
+once upon a time
+hello world!
+hi there@ owl apple and so on
+once upon a time
+hello world!
+hi there@ owl apple and so on
+once upon a time
+hello world!
+hi there@ owl apple and so on
+once upon a time]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ cat user10/lmn.txt.enc 
+u/49ma3NZyxKqUJjcC5JTRYLoojmJbI+fZPnVLugwfDl/FblDFeaBkHenqOKCo69QgWGb5EwOwzYc412lqWmWv+mPvxi0n7RoVxc418CmibdphMWsgYTCfrrkT7jrjTlUkNpjexTzypDoZAcyt2JGXZQWTS21LSuaKkWRwVQNywhqJcBS/Z8I6/cq+jD3uG0t746FJs8cdjmvr2nAcccl9w863Dc0Y+avSLUpRR4nCKNAmKWzsMTcUnfD5PufSSDZl5T3ZSVxHyTtHue1zN2AHlp1eOLr9kjBfuEaeA8EpsU1tnF6E08kypDLTgWitlE]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ exit[K[K[K[Kcat user10/lmn.txt.enc [K[8Pls user10/cat FS7/user3/abc.txt.enc [K[8Pls FS7/user3/[Kpython ker5.py -N 3 FS1 FS3 FS7
+ker5>get u     get ues  ser  2 FS1 abc.txt
+Success!!
+Specified file does not exist.. Try again
+ker5>put user2 FS2 3 lmn.txt
+Success!!
+Specified file does not exist.. Try again
+ker5>exit
+]0;prem@premkrishnaa: ~/7th sem/network security/lab3[01;32mprem@premkrishnaa[00m:[01;34m~/7th sem/network security/lab3[00m$ exit
+exit
+
+Script done on Sunday 08 October 2017 01:26:23 AM IST

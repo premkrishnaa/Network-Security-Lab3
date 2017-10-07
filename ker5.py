@@ -46,9 +46,9 @@ def main():
 		if(comm == 'exit'):
 			os.system("ps > temp.txt")
 			process = getPythonProcesses()
-			print(process)
+			# print(process)
 			process.remove(currProcID)
-			print(process)
+			# print(process)
 			for id in process:
 				os.system("kill " + str(id))
 			os.system("rm temp.txt")
@@ -67,21 +67,21 @@ def main():
 			if(comm_split[0] == 'get' or comm_split[0] == 'put'):
 				flag = 0
 				flag_ = 0
-				print('get/put')
+				# print('get/put')
 				if(int(getFileServerNo(fileserver)) not in fs_list):
-					print('File server not active! Try again..')
+					print('File server not specified in command line! Try again..')
 					continue
 				fname = 'key_user_' + str(getUserNo(user)) + '_fs_' + str(getFileServerNo(fileserver)) + '.txt'
 				fpath =  user + '/' + fname
-				print(fpath)
+
 				if(os.path.exists(fpath)):
 					flag = 1
 					t1=(time.time())
 					t2=(os.path.getmtime(fpath))
-					print('file exists')
-					print(t1-t2)
+					# print('file exists')
+					# print(t1-t2)
 					if(t1-t2 > 180):
-						print('Kc,v Expired')
+						# print('Kc,v Expired')
 						flag = 0
 						fname_ = 'key_user_' + str(getUserNo(user)) + '_tgs.txt'
 						fpath_ = user + '/' + fname_
@@ -90,12 +90,9 @@ def main():
 							t1_ = (time.time())
 							t2_ = (os.path.getmtime(fpath_))
 							if(t1_ - t2_ > 180):
-								print('Kc,tgs Expired')
+								# print('Kc,tgs Expired')
 								flag_ = 0
-							else:
-								print('Kc,tgs Valid')
-					else:
-						print('Kc,v Valid')
+
 				if(flag == 0 and flag_ == 0):
 					# Establish Kc,tgs
 					s = socket.socket()
@@ -122,6 +119,7 @@ def main():
 						f.close()
 					else:
 						print('Error in AS')
+						s.close()
 						continue
 					s.close()
 
@@ -146,6 +144,7 @@ def main():
 					# print(tgs_recv_msg)
 					if(tgs_recv_msg == 'ERROR'):
 						print('TGS Authentication failed.. Try again')
+						s.close()
 						continue
 					tgs_recv_msg_split = tgs_recv_msg.split(' ')
 					userid = tgs_recv_msg_split[0]
@@ -161,11 +160,76 @@ def main():
 					fileserver_ = e_k_c_tgs_split[3]
 					if(userid == user and TS1 == TS1_ and Nonce_ == Nonce_tgs and fileserver == fileserver_):
 						f = open(user + '/key_user_' + str(getUserNo(user)) + '_fs_' + str(getFileServerNo(fileserver)) + '.txt','w')
-						f.write(key_c_v + ' ' + ticket_v)
+						f.write(key_c_v)
 						f.close()
 					else:
 						print('Error in TGS')
+						s.close()
 						continue
+					s.close()
+
+					# Now need to exchange Kc,v with server
+					s = socket.socket()
+					port = getFSPort(fileserver)
+					s.connect(('127.0.0.1', port))
+					TS2 = str(time.time())
+					auth_msg = user + ' ' + fileserver + ' ' + TS2
+					auth_v = aes_ecb_enc(bd(key_c_v),add_padding(auth_msg))
+					tgs_msg = 'AUTH ' + ticket_v + ' ' + be(auth_v)
+					s.send(tgs_msg)
+
+					server_recv_msg = s.recv(1024)
+					if(server_recv_msg == 'ERROR'):
+						print('FS Authentication Failed.. Try again')
+						s.close()
+						continue
+					TS2_ = remove_padding(aes_ecb_dec(bd(key_c_v),bd(server_recv_msg)))
+					# print(TS2, TS2_)
+					if(TS2 != str(TS2_)):
+						print('Error in FS')
+						s.close()
+						continue
+					s.close()
+
+				# Now we can exchange the file
+				f = open(user + '/key_user_' + str(getUserNo(user)) + '_fs_' + str(getFileServerNo(fileserver)) +'.txt','r')
+				key_c_v = bd(f.readline())
+				f.close()
+				if(comm_split[0] == 'put'):
+					filepath = user + '/' + filename
+					if(os.path.exists(filepath)):
+						f = open(filepath,'r')
+						filetext = ''
+						for ln in f.readlines():
+							filetext += ln
+						f.close()
+						filetext_encoded = be(aes_ecb_enc(key_c_v,add_padding(filetext)))
+						s = socket.socket()
+						port = getFSPort(fileserver)
+						s.connect(('127.0.0.1', port))
+						s.send('PUT ' + user + ' ' + filename + ' ' + filetext_encoded)
+						s.close()
+					else:
+						print('Specified file does not exist.. Try again')
+						continue
+				else:
+					s = socket.socket()
+					port = getFSPort(fileserver)
+					s.connect(('127.0.0.1', port))
+					s.send('GET ' + user + ' ' + filename)
+					filetext_encoded = str(s.recv(3000))
+					if(filetext_encoded == 'NONE'):
+						print('Specified file does not exist.. Try again')
+						s.close()
+						continue
+					filepath = user + '/' + filename
+					filetext = remove_padding(aes_ecb_dec(key_c_v,bd(filetext_encoded)))
+					f = open(filepath, 'w')
+					f.write(filetext)
+					f.close()
+					f = open(filepath + '.enc', 'w')
+					f.write(filetext_encoded)
+					f.close()
 					s.close()
 			else:
 				print('Error in command!\nChoose again....')
@@ -197,7 +261,7 @@ for i in range(3,l):
 		exit()	
 	if(temp not in fs_list):
 		fs_list.append(temp)
-print(fs_list)
+# print(fs_list)
 if(N != len(fs_list)):
 	print('Error in command!\nAborting')
 	exit()
