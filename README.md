@@ -1,4 +1,4 @@
-Assumptions: The file directory structure is always present, size of the file being sent/received is atmost 2000 bytes
+Assumptions: The file directory structure is already present, size of the file being sent/received is atmost 2000 bytes
 
 userkeys.py, fileserverkeys.py and as_tgs_enc_keys.py have been used to generate the keys that are assumed to be pre-existing
 
