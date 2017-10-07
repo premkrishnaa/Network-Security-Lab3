@@ -7,8 +7,8 @@ def main():
 	print "Socket successfully created"
 	 
 	port = 8680 + id
-	print(port)         
-	 
+	# print(port)         
+	s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 	 
 	s.bind(('', port))        
 	print "socket binded to %s" %(port)
 	 
@@ -19,7 +19,6 @@ def main():
 	 
 		c, addr = s.accept()     
 		print 'Got connection from', addr
-	 
 		c.send('Thank you for connecting')
 	 
 	   	c.close()
